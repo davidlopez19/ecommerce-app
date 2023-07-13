@@ -2,19 +2,22 @@ import { HttpHeaders, HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/app/enviroments/enviroment';
+import { LocalStorageService } from './localStorage.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class BaseService {
+export class BaseService<TmodelResponse> {
 
   public headers: HttpHeaders;
-  public API_ROOT = environment.API_URL;
+  // public API_ROOT = environment.API_URL;
+  public API_ROOT = "https://eccomerce-api.azurewebsites.net/";
 
   constructor(
-    protected _httpClient: HttpClient
+    protected _httpClient: HttpClient,
+    private _localStorageService: LocalStorageService
   ) {
     this.headers = new HttpHeaders({
       'Access-Control-Allow-Origin': '*'
@@ -39,20 +42,20 @@ export class BaseService {
   }
 
 
-  public get<Tmodel>(endPoint: string, queryString: string, authorization?: boolean): Observable<Tmodel> {
+  public get<Tmodel>(endPoint: string, queryString: string, authorization?: boolean): Observable<TmodelResponse> {
 
     if (authorization) {
       this.addAutorization();
     }
-    return this._httpClient.get<Tmodel>(`${this.API_ROOT}${endPoint}${queryString}`, { headers: this.headers }).pipe();
+    return this._httpClient.get<TmodelResponse>(`${this.API_ROOT}${endPoint}${queryString}`, { headers: this.headers }).pipe();
   }
 
 
-  public post<Tmodel>(endPoint: string, object: any, addAutorization?: boolean): Observable<Tmodel> {
+  public post<Tmodel>(endPoint: string, object: any, addAutorization?: boolean): Observable<TmodelResponse> {
     if (addAutorization) {
       this.addAutorization();
     }
-    return this._httpClient.post<Tmodel>(`${this.API_ROOT}${endPoint}`, object, { headers: this.headers }).pipe();
+    return this._httpClient.post<TmodelResponse>(`${this.API_ROOT}${endPoint}`, object, { headers: this.headers }).pipe();
   }
 
   public getDownloadFile(endPoint: string, object: any, mimeTypeFile: string) {
@@ -87,7 +90,9 @@ export class BaseService {
   }
 
   private getTokenFromCookie() {
-    return this.getCookie('InternalToken');
+    return this._localStorageService.get("token");
+   // return this.getCookie('InternalToken');
+
   }
 
   private getCookie(name: string): string {
