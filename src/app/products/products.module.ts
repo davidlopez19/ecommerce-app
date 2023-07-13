@@ -6,10 +6,14 @@ import { ListProductComponent } from './list-product/list-product.component';
 import { DetailsProductComponent } from './details-product/details-product.component';
 import { DeleteProductComponent } from './delete-product/delete-product.component';
 import { UpdateProductComponent } from './update-product/update-product.component';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    TableModule,
+    ButtonModule
   ],
   declarations: [ProductsComponent, CreateProductComponent, ListProductComponent, DetailsProductComponent, DeleteProductComponent, UpdateProductComponent],
   exports: [ProductsComponent, CreateProductComponent, ListProductComponent, DetailsProductComponent, DeleteProductComponent, UpdateProductComponent]

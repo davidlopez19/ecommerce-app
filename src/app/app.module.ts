@@ -10,7 +10,13 @@ import { ShoppingModule } from './shopping/shopping.module';
 import { ProductsComponent } from './products/products.component';
 import { ProductsModule } from './products/products.module';
 import { ClientsModule } from './clients/clients.module';
-
+import { FormsModule } from '@angular/forms';
+import { BaseService } from './services/shared/base-api.service';
+import { AuthenticationService } from './services/shared/authentication.service';
+import { HttpClient } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+import { LocalStorageService } from './services/shared/localStorage.service';
+import { CardModule } from 'primeng/card';
 @NgModule({
   declarations: [
     AppComponent
@@ -24,9 +30,12 @@ import { ClientsModule } from './clients/clients.module';
     MenubarModule,
     ShoppingModule,
     ProductsModule,
-    ClientsModule
+    ClientsModule,
+    FormsModule,
+    HttpClientModule,
+    CardModule
   ],
-  providers: [],
+  providers: [BaseService, AuthenticationService, LocalStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
